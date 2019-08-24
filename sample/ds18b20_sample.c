@@ -50,16 +50,16 @@ static void read_temp_entry(void *parameter)
             if (sensor_data.data.temp >= 0)
             {
                 rt_kprintf("temp:%3d.%dC, timestamp:%5d\n",
-                       sensor_data.data.temp / 10,
-                       sensor_data.data.temp % 10,
-                       sensor_data.timestamp);
+                           sensor_data.data.temp / 10,
+                           sensor_data.data.temp % 10,
+                           sensor_data.timestamp);
             }
             else
             {
                 rt_kprintf("temp:-%2d.%dC, timestamp:%5d\n",
-                       abs(sensor_data.data.temp / 10),
-                       abs(sensor_data.data.temp % 10),
-                       sensor_data.timestamp);
+                           abs(sensor_data.data.temp / 10),
+                           abs(sensor_data.data.temp % 10),
+                           sensor_data.timestamp);
             }
         }
         rt_thread_mdelay(100);
