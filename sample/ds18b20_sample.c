@@ -57,7 +57,7 @@ static void read_temp_entry(void *parameter)
             else
             {
                 rt_kprintf("temp:-%2d.%dC, timestamp:%5d\n",
-					       abs(sensor_data.data.temp / 10),
+                           abs(sensor_data.data.temp / 10),
                            abs(sensor_data.data.temp % 10),
                            sensor_data.timestamp);
             }
