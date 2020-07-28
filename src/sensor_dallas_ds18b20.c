@@ -6,7 +6,7 @@
  * Change Logs:
  * Date           Author          Notes
  * 2019-07-15     WillianChan     the first version.
- *
+ * 2020-07-28     WillianChan     add ds18b20 init error message
  */
 
 #include "sensor_dallas_ds18b20.h"
@@ -249,6 +249,12 @@ int rt_hw_ds18b20_init(const char *name, struct rt_sensor_config *cfg)
         }
 
     }
+    else
+    {
+        LOG_E("DS18B20 init failed! Please check the connection!");
+        goto __exit;
+    }
+    
     return RT_EOK;
     
 __exit:
