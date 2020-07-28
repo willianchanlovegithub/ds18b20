@@ -6,10 +6,12 @@
  * Change Logs:
  * Date           Author         Notes
  * 2019-07-24     WillianChan    the first version
+ * 2020-07-28     WillianChan    add the inclusion of the board.h
  */
 
 #include <stdlib.h>
 #include <rtthread.h>
+#include "board.h"
 #include "sensor.h"
 #include "sensor_dallas_ds18b20.h"
 
