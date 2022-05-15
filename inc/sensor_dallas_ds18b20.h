@@ -12,6 +12,7 @@
 #ifndef __DS18B20_H__
 #define __DS18B20_H__
 
+#include <stdint.h>
 #include <rthw.h>
 #include <rtthread.h>
 #include <rtdevice.h>
