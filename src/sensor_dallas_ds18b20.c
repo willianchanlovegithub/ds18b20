@@ -42,7 +42,7 @@ static void ds18b20_reset(rt_base_t pin)
 static uint8_t ds18b20_connect(rt_base_t pin)
 {
     uint8_t retry = 0;
-    rt_pin_mode(pin, PIN_MODE_INPUT);
+    rt_pin_mode(pin, PIN_MODE_INPUT_PULLUP);
 
     while (rt_pin_read(pin) && retry < 200)
     {
@@ -75,7 +75,7 @@ static uint8_t ds18b20_read_bit(rt_base_t pin)
     rt_pin_write(pin, PIN_LOW);
     rt_hw_us_delay(2);
     rt_pin_write(pin, PIN_HIGH);
-    rt_pin_mode(pin, PIN_MODE_INPUT);
+    rt_pin_mode(pin, PIN_MODE_INPUT_PULLUP);
     /* maybe 12us, maybe 5us, whatever...I have no idea */
     rt_hw_us_delay(5);
 
@@ -94,11 +94,13 @@ static uint8_t ds18b20_read_byte(rt_base_t pin)
     uint8_t i, j, dat;
     dat = 0;
 
+    rt_enter_critical();
     for (i = 1; i <= 8; i++)
     {
         j = ds18b20_read_bit(pin);
         dat = (j << 7) | (dat >> 1);
     }
+    rt_exit_critical();
 
     return dat;
 }
@@ -109,6 +111,7 @@ static void ds18b20_write_byte(rt_base_t pin, uint8_t dat)
     uint8_t testb;
     rt_pin_mode(pin, PIN_MODE_OUTPUT);
 
+    rt_enter_critical();
     for (j = 1; j <= 8; j++)
     {
         testb = dat & 0x01;
@@ -129,6 +132,7 @@ static void ds18b20_write_byte(rt_base_t pin, uint8_t dat)
             rt_hw_us_delay(2);
         }
     }
+    rt_exit_critical();
 }
 
 void ds18b20_start(rt_base_t pin)
