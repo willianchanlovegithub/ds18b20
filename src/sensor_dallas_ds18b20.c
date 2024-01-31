@@ -20,7 +20,7 @@
 #define SENSOR_TEMP_RANGE_MAX (125)
 #define SENSOR_TEMP_RANGE_MIN (-55)
 
-RT_WEAK void rt_hw_us_delay(rt_uint32_t us)
+rt_weak void rt_hw_us_delay(rt_uint32_t us)
 {
     rt_uint32_t delta;
 
@@ -94,11 +94,13 @@ static uint8_t ds18b20_read_byte(rt_base_t pin)
     uint8_t i, j, dat;
     dat = 0;
 
+    rt_enter_critical();
     for (i = 1; i <= 8; i++)
     {
         j = ds18b20_read_bit(pin);
         dat = (j << 7) | (dat >> 1);
     }
+    rt_exit_critical();
 
     return dat;
 }
@@ -109,6 +111,7 @@ static void ds18b20_write_byte(rt_base_t pin, uint8_t dat)
     uint8_t testb;
     rt_pin_mode(pin, PIN_MODE_OUTPUT);
 
+    rt_enter_critical();
     for (j = 1; j <= 8; j++)
     {
         testb = dat & 0x01;
@@ -129,6 +132,7 @@ static void ds18b20_write_byte(rt_base_t pin, uint8_t dat)
             rt_hw_us_delay(2);
         }
     }
+    rt_exit_critical();
 }
 
 void ds18b20_start(rt_base_t pin)
@@ -167,7 +171,7 @@ int32_t ds18b20_get_temperature(rt_base_t pin)
         tem = TH;
         tem <<= 8;
         tem += TL;
-        tem = (int32_t)(tem * 0.0625 * 10 + 0.5);
+        tem = (int32_t)(tem * 0.0625 * 10 + 0.5);//10倍温度，+0.5实现四舍五入
         return -tem;
     }
     else
@@ -175,7 +179,7 @@ int32_t ds18b20_get_temperature(rt_base_t pin)
         tem = TH;
         tem <<= 8;
         tem += TL;
-        tem = (int32_t)(tem * 0.0625 * 10 + 0.5);
+        tem = (int32_t)(tem * 0.0625 * 10 + 0.5);//10倍温度，+0.5实现四舍五入
         return tem;
     }
 }
